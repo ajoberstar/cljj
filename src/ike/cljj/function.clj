@@ -44,26 +44,16 @@
   [sami & forms]
   `(sam* ~sami (fn ~forms)))
 
-(defn process-defsam-form [decl form]
-  (let [ndecl (update decl :fdecl rest)]
-    (cond
-      (string? form) (assoc-in ndecl [:meta :doc] form)
-      (map? form) (update ndecl :meta merge form)
-      (symbol? form) (reduced (assoc ndecl :sami (resolve form)))
-      :else ndecl)))
-
-(defn process-defsam [[name & forms]]
-  (reduce process-defsam-form
-          {:name name :meta (meta name) :fdecl forms}
-          forms))
-
 (defmacro defsam
   "Defines a SAM instance bound to a Var named using the symbol
-  passed in the first argument. The instance will implement the
-  SAM interface specified in the second argument. The remaining
+  passed in the first argument. An optional docstring may be
+  passed as the second argument. The following argument will be
+  the SAM interface that should be implemented. The remaining
   arguments are treated as if to clojure.core/fn."
-  [& forms]
-  (let [{name :name meta :meta sami :sami fdecl :fdecl} (process-defsam forms)
-        name (with-meta name meta)
-        asam (list* `sam sami fdecl)]
-    `(def ~name ~asam)))
+  {:arglists '([name sami & fdecl]
+                [name docstring sami & fdecl])}
+  [name & forms]
+  (let [[form1 & rforms] forms]
+    (if (string? form1)
+      (list* `defsam (vary-meta name assoc :doc form1) rforms)
+      (list `def name (list* `sam form1 rforms)))))
