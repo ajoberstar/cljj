@@ -4,19 +4,19 @@
   (:import (java.util.function Supplier Consumer Function BiFunction)))
 
 (deftest supplier
-  (let [f (fn->sam (fn [] "supplied") Supplier)]
+  (let [f (sam* Supplier (fn [] "supplied"))]
     (is (= "supplied" (.get f)))))
 
 (deftest consumer
   (let [p (promise)
-        f (fn->sam (fn [x] (deliver p x)) Consumer)]
+        f (sam* Consumer (fn [x] (deliver p x)))]
     (is (nil? (.accept f 123)))
     (is (= 123 @p))))
 
 (deftest function
-  (let [f (fn->sam (fn [x] (* x 2)) Function)]
+  (let [f (sam* Function (fn [x] (* x 2)))]
     (is (= 4 (.apply f 2)))))
 
 (deftest bifunction
-  (let [f (fn->sam (fn [x y] (* x y)) BiFunction)]
+  (let [f (sam* BiFunction (fn [x y] (* x y)))]
     (is (= 6 (.apply f 2 3)))))
