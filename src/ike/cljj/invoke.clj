@@ -2,6 +2,7 @@
   (:import (java.lang.invoke MethodType MethodHandles MethodHandleProxies MethodHandles$Lookup MethodHandle)))
 
 (defn array-class
+  "Gets the array class for the given class."
   [^Class clazz]
   (class (into-array clazz [])))
 
@@ -13,10 +14,12 @@
     (MethodType/methodType ret parm-array)))
 
 (defn ^MethodType unwrap
+  "Convert all wrapper types to primitives."
   [^MethodType handle]
   (.unwrap handle))
 
 (defn ^MethodType wrap
+  "Convert all primitive types to wrappers."
   [^MethodType handle]
   (.wrap handle))
 
@@ -45,6 +48,7 @@
   (.bindTo handle arg))
 
 (defn ^MethodHandle collect-args
+  ""
   ([^MethodHandle target ^MethodHandle combiner]
    (collect-args target 0 combiner))
   ([^MethodHandle target ^long index ^MethodHandle combiner]
@@ -53,6 +57,8 @@
 (def ^:private array-type (class (into-array Object [])))
 
 (defn ^MethodHandle as-varargs
+  "Converts the passed handle to a handle that accepts
+  varargs "
   ([^MethodHandle handle]
    (let [last-arg (-> handle .type .parameterArray last)]
      (if (.isArray last-arg)
@@ -61,13 +67,8 @@
   ([^MethodHandle handle ^Class clazz]
    (.asVarargsCollector handle clazz)))
 
-(defn ^MethodHandle as-spreader
-  ([^MethodHandle handle]
-   (as-spreader handle (-> handle .type .parameterCount)))
-  ([^MethodHandle handle ^long count]
-    (.asSpreader handle array-type count)))
-
 (defn invoke
+  "Invokes the method handle with any passed parameters."
   [^MethodHandle handle & parms]
   (.invokeWithArguments handle parms))
 
