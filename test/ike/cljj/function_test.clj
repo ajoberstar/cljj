@@ -20,3 +20,17 @@
 (deftest bifunction
   (let [f (sam* BiFunction (fn [x y] (* x y)))]
     (is (= 6 (.apply f 2 3)))))
+
+
+(deftest sam-macro-supplier
+  (let [f (sam Supplier [] "supplied")]
+    (is (= "supplied" (.get f)))))
+
+(deftest defsam-macro-supplier
+  (defsam f Supplier [] "supplied")
+  (is (= "supplied" (.get f))))
+
+(deftest defsam-docstring-macro-supplier
+  (defsam f "It worked!" Supplier [] "supplied")
+  (is (= "supplied" (.get f)))
+  (is (= "It worked!" (:doc (meta #'f)))))
