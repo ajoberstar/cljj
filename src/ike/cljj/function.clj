@@ -1,37 +1,21 @@
 (ns ike.cljj.function
-  (:import (java.util.function BiFunction Supplier Consumer Function)
-           (java.lang.invoke MethodHandles MethodHandleProxies MethodType)))
-  
-(defn method-type [ret & parms]
-    (let [parm-array (into-array Class parms)]
-        (MethodType/methodType ret parm-array)))
+  (:require [ike.cljj.invoke :as invoke])
+  (:import (clojure.lang RT ISeq IFn)
+           (java.util.function BiFunction Supplier Consumer Function)))
 
-(defmulti method-handle (fn [kind receiver name type] kind))
+(def ^:private seq-handle
+  (invoke/static-handle RT "seq" (invoke/method-type ISeq Object)))
 
-(defmethod method-handle :instance [kind receiver name type]
-    (.bind (MethodHandles/publicLookup) receiver name type))
+(def ^:private apply-handle
+  (invoke/virtual-handle IFn "applyTo" (invoke/method-type Object ISeq)))
 
-(defmethod method-handle :static [kind receiver name type]
-    (.findStatic (MethodHandles/publicLookup) receiver name type))
+(defn fn->handle [f]
+  (-> (invoke/bind apply-handle f)
+      (invoke/collect-args seq-handle)
+      invoke/as-varargs))
 
-(defmethod method-handle :virtual [kind receiver name type]
-    (.findVirtual (MethodHandles/publicLookup) receiver name type))
-
-(def array-type (class (into-array Object [])))
-
-(def seq-handle
-    (let [type (method-type clojure.lang.ISeq Object)]
-        (method-handle :static clojure.lang.RT "seq" type)))
-
-(def apply-handle
-    (let [type (method-type Object clojure.lang.ISeq)]
-        (method-handle :virtual clojure.lang.IFn "applyTo" type)))
-
-(defn invoke-handle [f]
-    (.asVarargsCollector (MethodHandles/collectArguments (.bindTo apply-handle f) 0 seq-handle) array-type))
-
-(defn sam-proxy [sam f]
-    (MethodHandleProxies/asInterfaceInstance sam (invoke-handle f)))
+(defn fn->sam [f sam]
+  (invoke/proxy-sam sam (fn->handle f)))
 
 (defn lambda [f]
   (reify
