@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="Leiningen: org.clojure/test.check:0.7.0">
-    <CLASSES>
-      <root url="jar://$MAVEN_REPOSITORY$/org/clojure/test.check/0.7.0/test.check-0.7.0.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>
