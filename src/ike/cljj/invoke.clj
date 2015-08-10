@@ -1,5 +1,6 @@
 (ns ike.cljj.invoke
-  (:import (java.lang.invoke MethodType MethodHandles MethodHandleProxies MethodHandles$Lookup MethodHandle)))
+  (:import (java.lang.invoke MethodType MethodHandles MethodHandleProxies MethodHandles$Lookup MethodHandle)
+           (java.util List)))
 
 (defn array-class
   "Gets the array class for the given class."
@@ -9,8 +10,8 @@
 (defn ^MethodType method-type
   "Finds or creates a method type with the given return type 'ret'
   and parameters 'parms'."
-  [ret & parms]
-  (let [parm-array (into-array Class parms)]
+  [^Class ret & parms]
+  (let [^"[Ljava.lang.Class;" parm-array (into-array Class parms)]
     (MethodType/methodType ret parm-array)))
 
 (defn ^MethodType unwrap
@@ -60,7 +61,7 @@
   "Converts the passed handle to a handle that accepts
   varargs "
   ([^MethodHandle handle]
-   (let [last-arg (-> handle .type .parameterArray last)]
+   (let [^Class last-arg (-> handle .type .parameterArray last)]
      (if (.isArray last-arg)
        (as-varargs handle last-arg)
        (as-varargs handle (array-class Object)))))
@@ -70,7 +71,7 @@
 (defn invoke
   "Invokes the method handle with any passed parameters."
   [^MethodHandle handle & parms]
-  (let [parms (or parms ())]
+  (let [^List parms (or parms ())]
     (.invokeWithArguments handle parms)))
 
 (defn proxy-sam

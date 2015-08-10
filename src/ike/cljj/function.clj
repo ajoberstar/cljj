@@ -53,5 +53,6 @@
   arguments are treated as if to clojure.core/fn."
   {:arglists '([name docstring? attr-map? sami & fdecl])}
   [name & forms]
-  (let [[name [sami & forms]] (macro/name-with-attributes name forms)]
+  (let [[name [sami & forms]] (macro/name-with-attributes name forms)
+        name (vary-meta name assoc :tag sami)]
     `(def ~name (sam ~sami ~@forms))))
