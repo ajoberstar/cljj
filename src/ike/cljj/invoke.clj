@@ -70,7 +70,8 @@
 (defn invoke
   "Invokes the method handle with any passed parameters."
   [^MethodHandle handle & parms]
-  (.invokeWithArguments handle parms))
+  (let [parms (or parms ())]
+    (.invokeWithArguments handle parms)))
 
 (defn proxy-sam
   "Proxies a SAM (Single Abstrace Method) type by wrapping
