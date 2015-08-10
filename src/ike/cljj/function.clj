@@ -16,7 +16,8 @@
   has not been benchmarked, may or may not be. It is mainly
   intended to provide a more convenient interop with Java
   APIs that take SAM arguments."
-  (:require [ike.cljj.invoke :as invoke])
+  (:require [ike.cljj.invoke :as invoke]
+            [clojure.tools.macro :as macro])
   (:import (clojure.lang RT ISeq IFn)))
 
 (def ^:private seq-handle
@@ -46,14 +47,11 @@
 
 (defmacro defsam
   "Defines a SAM instance bound to a Var named using the symbol
-  passed in the first argument. An optional docstring may be
-  passed as the second argument. The following argument will be
-  the SAM interface that should be implemented. The remaining
+  passed in the first argument. Optional docstring and/or 
+  attribute map can be passed next. The following argument will
+  be the SAM interface that should be implemented. The remaining
   arguments are treated as if to clojure.core/fn."
-  {:arglists '([name sami & fdecl]
-                [name docstring sami & fdecl])}
+  {:arglists '([name docstring? attr-map? sami & fdecl])}
   [name & forms]
-  (let [[form1 & rforms] forms]
-    (if (string? form1)
-      (list* `defsam (vary-meta name assoc :doc form1) rforms)
-      (list `def name (list* `sam form1 rforms)))))
+  (let [[name [sami & forms]] (macro/name-with-attributes name forms)]
+    `(def ~name (sam ~sami ~@forms))))
