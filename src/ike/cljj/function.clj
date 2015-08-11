@@ -30,7 +30,7 @@
   "Gets a method handle for IFn, wrapped appropriately to support
   variadic arguments"
   (-> (invoke/bind apply-handle f)
-      (invoke/collect-args seq-handle)
+      (invoke/filter-args seq-handle)
       invoke/as-varargs))
 
 (defn sam* [sami f]

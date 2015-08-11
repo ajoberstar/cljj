@@ -1,8 +1,10 @@
 (ns ike.cljj.invoke
+  "Wrapper API for the java.lang.invoke API. Primarily this was limited
+  to the methods functions needed to support ike.cljj.function."
   (:import (java.lang.invoke MethodType MethodHandles MethodHandleProxies MethodHandles$Lookup MethodHandle)
            (java.util List)))
 
-(defn array-class
+(defn ^Class array-class
   "Gets the array class for the given class."
   [^Class clazz]
   (class (into-array clazz [])))
@@ -15,12 +17,14 @@
     (MethodType/methodType ret parm-array)))
 
 (defn ^MethodType unwrap
-  "Convert all wrapper types to primitives."
+  "Converts a method type so that any parameters that were wrappers
+  are now primitives."
   [^MethodType handle]
   (.unwrap handle))
 
 (defn ^MethodType wrap
-  "Convert all primitive types to wrappers."
+  "Converts a method type so that any parameters that were primitives
+  are now wrappers."
   [^MethodType handle]
   (.wrap handle))
 
@@ -48,18 +52,20 @@
   [^MethodHandle handle ^Object arg]
   (.bindTo handle arg))
 
-(defn ^MethodHandle collect-args
-  ""
-  ([^MethodHandle target ^MethodHandle combiner]
-   (collect-args target 0 combiner))
-  ([^MethodHandle target ^long index ^MethodHandle combiner]
-   (MethodHandles/collectArguments target index combiner)))
-
-(def ^:private array-type (class (into-array Object [])))
+(defn ^MethodHandle filter-args
+  "Creates a new method handle that will pass each argument, in sequence,
+  to each arity-1 filter handle. The results of each filter handle
+  will replace the original arguments."
+  ([^MethodHandle target & filters]
+   (let [^"[Ljava.lang.invoke.MethodHandle;" filters (into-array MethodHandle filters)]
+     (MethodHandles/filterArguments target 0 filters))))
 
 (defn ^MethodHandle as-varargs
   "Converts the passed handle to a handle that accepts
-  varargs "
+  varargs. If no clazz is passed, the final parameter
+  on the handle will be checked to see if it is an array
+  type. If it is, that class will be used. If not, an
+  Object[] class will be used."
   ([^MethodHandle handle]
    (let [^Class last-arg (-> handle .type .parameterArray last)]
      (if (.isArray last-arg)
