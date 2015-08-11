@@ -1,8 +1,11 @@
 (ns ike.cljj.stream
   (:require [clojure.core.protocols :refer [CollReduce coll-reduce]]
-            [ike.cljj.function :refer [lambda]])
+            [ike.cljj.function :refer [sam]])
   (:import (java.util.stream BaseStream Stream StreamSupport)
+           (java.util.function BiFunction BinaryOperator)
            (java.util Spliterator)))
+
+(defn stream-seq [stream] (-> stream .iterator iterator-seq))
 
 (defprotocol Streamable
   (to-stream [x]))
@@ -21,7 +24,7 @@
     (characteristics [_]
       (-> spliterator
           .characteristics
-          (bit-and-not Spliterator/SIZED)))
+          (bit-and-not Spliterator/SIZED Spliterator/SORTED)))
     (estimateSize [_]
       (if (realized? done)
         0
@@ -44,7 +47,9 @@
   "Creates an accumulator function for use by Stream.reduce()
   that handles reduced values."
   [f done]
-  (fn [acc val]
+  (sam
+    BiFunction
+    [acc val]
     (let [ret (f acc val)]
       (if (reduced? ret)
         (do
@@ -61,5 +66,5 @@
         (with-open [estream (early-stream stream done)]
           (.reduce estream
                    init
-                   (-> f (accumulator done) lambda)
-                   (lambda #(throw (Exception. "Combine should not be called.")))))))))
+                   (accumulator f done)
+                   (sam BinaryOperator [_] (throw (Exception. "Combine should not be called.")))))))))
