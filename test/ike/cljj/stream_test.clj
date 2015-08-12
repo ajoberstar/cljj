@@ -24,5 +24,4 @@
 (deftest stream-eduction
   (let [stream (IntStream/range 0 10)
         educ (eduction (filter odd?) (stream-seq stream))]
-    (is (seq? educ))
     (is (= 25 (reduce + 0 educ)))))
