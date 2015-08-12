@@ -5,9 +5,16 @@
            (java.util.function BiFunction BinaryOperator)
            (java.util Spliterator)))
 
-(defn stream-seq [stream] (-> stream .iterator iterator-seq))
+(defn stream-seq
+  "Converts a stream to a Seq. Unfortunately clojure.core/seq integration
+  isn't possible due to two things:
+  - BaseStream/Stream don't implement Iterable (though they have an iterator() method)
+  - No protocols exist that can make something work with clojure.core/seq"
+  [^BaseStream stream]
+  (-> stream .iterator iterator-seq))
 
 (defprotocol Streamable
+  "Extend this protocol if your type should be able to be converted to a Stream."
   (to-stream [x]))
 
 (extend-protocol Streamable
