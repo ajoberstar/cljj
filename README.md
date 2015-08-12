@@ -1,6 +1,5 @@
 # ike.cljj
 
-[![Maintainer Status](http://stillmaintained.com/ike-tools/ike.cljj.svg)](http://stillmaintained.com/ike-tools/ike.cljj)
 [![Travis](https://img.shields.io/travis/ike-tools/ike.cljj.svg?style=flat-square)](https://travis-ci.org/ike-tools/ike.cljj)
 [![GitHub license](https://img.shields.io/github/license/ike-tools/ike.cljj.svg?style=flat-square)](https://github.com/ike-tools/ike.cljj/blob/master/LICENSE)
 
