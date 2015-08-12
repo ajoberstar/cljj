@@ -1,5 +1,5 @@
 (defproject ike/ike.cljj "0.1.0-SNAPSHOT"
-  :description "FIXME: write description"
+  :description "Clojure to Java interop APIs"
   :url "https://github.com/ike-tools/ike.cljj"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
