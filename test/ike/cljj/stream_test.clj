@@ -1,7 +1,9 @@
 (ns ike.cljj.stream-test
   (:require [clojure.test :refer :all]
-            [ike.cljj.stream :refer :all])
-  (:import (java.util.stream IntStream)))
+            [ike.cljj.stream :refer :all]
+            [ike.cljj.function :refer [sam*]])
+  (:import (java.util.stream IntStream)
+           (java.util.function IntPredicate IntUnaryOperator)))
 
 (deftest stream-reduce
   (let [stream (IntStream/range 0 10)]
@@ -25,3 +27,9 @@
   (let [stream (IntStream/range 0 10)
         educ (eduction (filter odd?) (stream-seq stream))]
     (is (= 25 (reduce + 0 educ)))))
+
+(deftest stream-prefiltered-into
+  (let [stream (-> (IntStream/range 0 10)
+                   (.filter (sam* IntPredicate even?))
+                   (.map (sam* IntUnaryOperator (fn [x] (int (* x 3))))))]
+    (is (= [0 6 12 18 24] (into [] stream)))))
