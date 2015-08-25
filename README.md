@@ -2,13 +2,12 @@
 
 [![Travis](https://img.shields.io/travis/ike-tools/ike.cljj.svg?style=flat-square)](https://travis-ci.org/ike-tools/ike.cljj)
 [![GitHub license](https://img.shields.io/github/license/ike-tools/ike.cljj.svg?style=flat-square)](https://github.com/ike-tools/ike.cljj/blob/master/LICENSE)
-
-[![Clojars Project](http://clojars.org/ike/ike.cljj/latest-version.svg)](http://clojars.org/ike/ike.cljj)
+[![Clojars](https://img.shields.io/clojars/v/ike/ike.cljj.svg?style=flat-square)](http://clojars.org/ike/ike.cljj)
 
 ## Why do you care?
 
 Clojure provides some nice Java interop features, but they are missing clean support for newer APIs added to
-Java 7 and 8. 
+Java 7 and 8.
 
 ## What is it?
 
