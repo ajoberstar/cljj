@@ -110,9 +110,9 @@
         d1d4 (make-dir (.resolve tmp "1/4"))
         d1d5 (make-dir (.resolve tmp "1/5"))
         d1d4f6 (make-file (.resolve tmp "1/4/6"))]
-    ;; this may be depending on device/platform specific encounter order
-    (is (= [tmp f2 d1 d1d5 d1d4 d1d4f6 d1f3] (into [] (walk tmp))))
-    (is (= [tmp f2 d1 d1d5 d1d4 d1f3] (into [] (walk tmp 2))))))
+    ;; how to test the ordering?
+    (is (= #{tmp f2 d1 d1d5 d1d4 d1d4f6 d1f3} (into #{} (walk tmp))))
+    (is (= #{tmp f2 d1 d1d5 d1d4 d1f3} (into #{} (walk tmp 2))))))
 
 (deftest move-test
   (let [tmp (temp-dir "move")
@@ -149,4 +149,5 @@
     (copy tmp tmp2 true)
     (letfn [(walk-rel [dir] (let [xform (comp (drop 1) (map #(.relativize dir %)))]
                               (into #{} xform (walk dir))))]
+      ;; how to test the ordering?
       (is (= (walk-rel tmp) (walk-rel tmp2))))))
