@@ -1,4 +1,4 @@
-(defproject ike/ike.cljj "0.2.0-alpha3"
+(defproject ike/ike.cljj "0.2.0-alpha4"
   :description "Clojure to Java interop APIs"
   :url "https://github.com/ike-tools/ike.cljj"
   :license {:name "Eclipse Public License"
