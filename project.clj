@@ -1,4 +1,4 @@
-(defproject ike/ike.cljj "0.3.0-SNAPSHOT"
+(defproject ike/ike.cljj "0.2.2"
   :description "Clojure to Java interop APIs"
   :url "https://github.com/ike-tools/ike.cljj"
   :license {:name "Eclipse Public License"
@@ -6,8 +6,6 @@
   :dependencies [[org.clojure/clojure "1.7.0"]
                  [org.clojure/tools.macro "0.1.2"]]
   :release-tasks [["vcs" "assert-committed"]
-                  ["change" "version" "leiningen.release/bump-version"]
-                  ["vcs" "commit"]
                   ["vcs" "tag"]
                   ["deploy" "clojars"]
                   ["vcs" "push"]]
