@@ -18,6 +18,7 @@ ike.cljj is a Clojure library of wrappers around Java APIs.
 * Clojure functions to arbitrary Single Abstract Method (SAM) types (`ike.cljj.function` -> `java.util.function` and others)
 * Streams (`ike.cljj.stream` -> `java.util.stream`)
 * MethodHandles (`ike.cljj.invoke` -> `java.lang.invoke`)
+* NIO2 File API (`ike.cljj.file` -> `java.nio.file`)
 
 ## Usage
 
@@ -63,6 +64,16 @@ The `ike.cljj.function` namespace includes three main helpers for this:
     (.filter my-sam)
     (.collect Collectors/toList)
 ```
+
+### File API
+
+The NIO2 API for files is much improved over `java.io.File`, but has some headaches from
+Clojure, namely the extensive use of varargs. The `ike.cljj.file` namespace provides wrappers
+over these functions for two benefits:
+
+- more natural variadic functions for Clojure use (no explicit `into-array` calls)
+- flexible argument types using the `Pathish` protocol that already converts many common types
+to `Path` (e.g. `String`, `File`, `URI`).
 
 ## Questions, Bugs, and Features
 
