@@ -1,6 +1,6 @@
-(defproject ike/ike.cljj "0.2.3"
-  :description "DEPRECATED: Use org.ajoberstar/clj-java"
-  :url "https://github.com/ajoberstar/clj-java"
+(defproject ike/ike.cljj "0.2.4"
+  :description "DEPRECATED: Use org.ajoberstar/ike.cljj"
+  :url "https://github.com/ajoberstar/ike.cljj"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.7.0"]
