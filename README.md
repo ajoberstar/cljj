@@ -17,7 +17,6 @@ ike.cljj is a Clojure library of wrappers around Java APIs.
 
 * Clojure functions to arbitrary Single Abstract Method (SAM) types (`ike.cljj.function` -> `java.util.function` and others)
 * Streams (`ike.cljj.stream` -> `java.util.stream`)
-* MethodHandles (`ike.cljj.invoke` -> `java.lang.invoke`)
 * NIO2 File API (`ike.cljj.file` -> `java.nio.file`)
 
 ## Usage

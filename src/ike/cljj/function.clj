@@ -16,7 +16,7 @@
   has not been benchmarked, may or may not be. It is mainly
   intended to provide a more convenient interop with Java
   APIs that take SAM arguments."
-  (:require [ike.cljj.invoke :as invoke]
+  (:require [ike.cljj.internal.invoke :as invoke]
             [clojure.tools.macro :as macro])
   (:import (clojure.lang RT ISeq IFn)))
 
@@ -47,7 +47,7 @@
 
 (defmacro defsam
   "Defines a SAM instance bound to a Var named using the symbol
-  passed in the first argument. Optional docstring and/or 
+  passed in the first argument. Optional docstring and/or
   attribute map can be passed next. The following argument will
   be the SAM interface that should be implemented. The remaining
   arguments are treated as if to clojure.core/fn."

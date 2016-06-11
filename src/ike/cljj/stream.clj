@@ -69,9 +69,9 @@
   (coll-reduce
     ([stream f] (coll-reduce stream f (f)))
     ([stream f init]
-      (let [done (promise)]
-        (with-open [estream (early-stream stream done)]
-          (.reduce estream
-                   init
-                   (accumulator f done)
-                   (sam BinaryOperator [_] (throw (Exception. "Combine should not be called.")))))))))
+     (let [done (promise)]
+       (with-open [estream (early-stream stream done)]
+         (.reduce estream
+                  init
+                  (accumulator f done)
+                  (sam BinaryOperator [_] (throw (Exception. "Combine should not be called.")))))))))
