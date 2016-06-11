@@ -1,8 +1,8 @@
 # ike.cljj
 
-[![Travis](https://img.shields.io/travis/ike-tools/ike.cljj.svg?style=flat-square)](https://travis-ci.org/ike-tools/ike.cljj)
-[![GitHub license](https://img.shields.io/github/license/ike-tools/ike.cljj.svg?style=flat-square)](https://github.com/ike-tools/ike.cljj/blob/master/LICENSE)
-[![Clojars](https://img.shields.io/clojars/v/ike/ike.cljj.svg?style=flat-square)](http://clojars.org/ike/ike.cljj)
+[![Travis](https://img.shields.io/travis/ajoberstar/ike.cljj.svg?style=flat-square)](https://travis-ci.org/ajoberstar/ike.cljj)
+[![GitHub license](https://img.shields.io/github/license/ajoberstar/ike.cljj.svg?style=flat-square)](https://github.com/ajoberstar/ike.cljj/blob/master/LICENSE)
+[![Clojars](https://img.shields.io/clojars/v/org.ajoberstar/ike.cljj.svg?style=flat-square)](http://clojars.org/org.ajoberstar/ike.cljj)
 
 ## Why do you care?
 
@@ -77,7 +77,7 @@ to `Path` (e.g. `String`, `File`, `URI`).
 
 ## Questions, Bugs, and Features
 
-Please use the repo's [issues](https://github.com/ike-tools/ike.cljj/issues)
+Please use the repo's [issues](https://github.com/ajoberstar/ike.cljj/issues)
 for all questions, bug reports, and feature requests.
 
 ## Contributing
@@ -88,12 +88,12 @@ Smaller changes can come directly as a PR, but larger or more complex
 ones should be discussed in an issue first to flesh out the approach.
 
 If you're interested in implementing a feature on the
-[issues backlog](https://github.com/ike-tools/ike.cljj/issues), add a comment
+[issues backlog](https://github.com/ajoberstar/ike.cljj/issues), add a comment
 to make sure it's not already in progress and for any needed discussion.
 
 ## License
 
-Copyright © 2015 Andrew Oberstar
+Copyright © 2015-2016 Andrew Oberstar
 
 Distributed under the Eclipse Public License either version 1.0 or (at
 your option) any later version.
