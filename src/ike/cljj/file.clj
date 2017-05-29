@@ -158,7 +158,7 @@
 (defn read-str
   "Reads all bytes from a file and returns as a String (using UTF-8)."
   [path]
-  (-> path read-lines (.getBytes (StandardCharsets/UTF_8))))
+  (-> path read-bytes (String. (StandardCharsets/UTF_8))))
 
 (defn write-bytes
   "Writes all bytes to a file (truncating any existing content)."
@@ -169,3 +169,8 @@
   "Writes all lines to a file (truncating any existing content)."
   [path lines]
   (Files/write (as-path path) lines (StandardCharsets/UTF_8) (into-array OpenOption [])))
+
+(defn write-str
+  "Writes a String's bytes (as UTF-8) to to a file."
+  [path content]
+  (write-bytes path (.getBytes content (StandardCharsets/UTF_8))))

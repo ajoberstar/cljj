@@ -94,6 +94,12 @@
     (file/write-bytes tmp test-bytes)
     (is (= (seq test-bytes) (seq (file/read-bytes tmp))))))
 
+(deftest write-read-str-round-trip
+  (let [tmp (file/temp-file "str" ".txt")
+        test-str "onetwothree"]
+    (file/write-str tmp test-str)
+    (is (= test-str (file/read-str tmp)))))
+
 (deftest list-test
   (let [tmp (file/temp-dir "list")
         one (.resolve tmp "one")
