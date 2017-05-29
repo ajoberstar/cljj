@@ -95,13 +95,29 @@
   (Files/size (as-path path)))
 
 (defn list
-  "Lists the immediate children of a directory."
+  "Lists the immediate children of a directory. Be sure to use this in a with-open
+  or use reduce/transducers to close the stream.
+
+    ;; just read first child
+    (with-open [children (file/list path)]
+      (first (stream/stream-seq children)))
+
+    ;; just read the name of each file
+    (into [] (map .getFileName) (file/list path))"
   [path]
   (Files/list (as-path path)))
 
 (defn walk
   "Walks the file tree (depth-first) below a directory, returning a Stream. The first element
-  will always be the given path."
+  will always be the given path. Be sure to use this in a with-open
+  or use reduce/transducers to close the stream.
+
+    ;; just read first descendant
+    (with-open [children (file/walk path)]
+      (first (stream/stream-seq children)))
+
+    ;; just read the name of each file
+    (into [] (map .getFileName) (file/walk path))"
   ([path] (Files/walk (as-path path) (into-array FileVisitOption [])))
   ([path max-depth] (Files/walk (as-path path) max-depth (into-array FileVisitOption []))))
 
@@ -191,13 +207,23 @@
   [path]
   (Files/readAllBytes (as-path path)))
 
-(defn read-lines
-  "Reads lines from a file and returns them in a Stream. Options include:
+(defn lines
+  "Lazily reads lines from a file and returns them in a Stream. Be sure to use this in a with-open
+  or use reduce/transducers to close the file.
+
+    ;; just read first line
+    (with-open [lines (file/lines path)]
+      (first (stream/stream-seq lines)))
+
+    ;; just read first character of each line
+    (into [] (map first) (file/lines path))
+
+  Options include:
     :encoding  string name of charset (as supported by Charset/forName) (default \"UTF-8\")"
   [path & {:as opts}]
   (Files/lines (as-path path) (encoding opts)))
 
-(defn read-all-lines
+(defn read-lines
   "Reads all lines from a file and returns them as a List. Options include:
     :encoding  string name of charset (as supported by Charset/forName) (default \"UTF-8\")"
   [path & {:as opts}]

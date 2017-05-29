@@ -99,8 +99,8 @@
   (let [tmp (file/temp-file "lines" ".txt")
         test-lines ["one" "two" "three"]]
     (file/write-lines tmp test-lines)
-    (is (= test-lines (into [] (file/read-lines tmp))))
-    (is (= test-lines (file/read-all-lines tmp)))))
+    (is (= test-lines (into [] (file/lines tmp))))
+    (is (= test-lines (file/read-lines tmp)))))
 
 (deftest write-read-bytes-round-trip
   (let [tmp (file/temp-file "bytes" ".txt")
@@ -120,7 +120,7 @@
         lines2 ["two"]]
     (file/write-lines tmp lines1)
     (file/write-lines tmp lines2 :append true)
-    (is (= ["one" "two"] (file/read-all-lines tmp)))))
+    (is (= ["one" "two"] (file/read-lines tmp)))))
 
 (deftest write-encoding
   (let [tmp (file/temp-file "str" ".txt")
