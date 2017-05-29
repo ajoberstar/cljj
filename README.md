@@ -64,6 +64,15 @@ The `ike.cljj.function` namespace includes three main helpers for this:
     (.collect Collectors/toList)
 ```
 
+Note that primitive streams require different SAM types.
+
+```clojure
+;; ignore that I'm not using ike.cljj.stream here
+(-> (IntStream/range 0 10)
+    (.filter (sam* java.util.function.IntPredicate odd?))
+    (.collect Collectors/toList)
+```
+
 ### File API
 
 The NIO2 API for files is much improved over `java.io.File`, but has some headaches from
