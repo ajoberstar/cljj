@@ -76,10 +76,11 @@
     (is (not (file/same? a c)))))
 
 (deftest size-test
-  (let [tmp (file/temp-file "size" ".txt")]
+  (let [tmp (file/temp-file "size" ".txt")
+        linesep-size (.length (System/lineSeparator))]
     (is (= 0 (file/size tmp)))
     (file/write-lines tmp ["one" "two"])
-    (is (= 8 (file/size tmp)))))
+    (is (= (+ 6 (* 2 linesep-size)) (file/size tmp)))))
 
 (deftest write-read-lines-round-trip
   (let [tmp (file/temp-file "lines" ".txt")
