@@ -62,6 +62,7 @@
         target (file/temp-file tmp "target" ".txt")]
     (is (not (file/exists? path)))
     (file/make-link path target)
+    (is (= target (file/read-link path)))
     (is (file/exists? path))
     (is (file/file? path))
     (is (not (file/dir? path)))

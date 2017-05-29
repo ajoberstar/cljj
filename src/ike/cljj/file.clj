@@ -118,6 +118,11 @@
   [path target]
   (Files/createSymbolicLink (as-path path) (as-path target) (into-array FileAttribute [])))
 
+(defn read-link
+  "Reads the target of a symbolic link."
+  [path]
+  (Files/readSymbolicLink (as-path path)))
+
 (defn temp-dir
   "Creates a temporary dir. Uses java.io.tmpdir as the parent folder unless 'dir' is provided."
   ([prefix]
