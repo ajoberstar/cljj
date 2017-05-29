@@ -74,6 +74,7 @@
         target (file/temp-dir tmp "target")]
     (is (not (file/exists? path)))
     (file/make-link path target)
+    (is (= target (file/read-link path)))
     (is (file/exists? path))
     (is (not (file/file? path)))
     (is (file/dir? path))
@@ -152,7 +153,7 @@
         d1d4 (file/make-dir (.resolve tmp "1/4"))
         d1d5 (file/make-dir (.resolve tmp "1/5"))
         d1d4f6 (file/make-file (.resolve tmp "1/4/6"))]
-    (file/delete tmp true)
+    (file/delete tmp :recurse)
     (is (not (file/exists? tmp)))))
 
 (deftest copy-recursive-test
@@ -165,7 +166,7 @@
         d1d4f6 (file/make-file (.resolve tmp "1/4/6"))
         tmp2 (file/temp-dir "copy2")]
     (is (not= (into #{} (file/walk tmp)) (into #{} (file/walk tmp2))))
-    (file/copy tmp tmp2 true)
+    (file/copy tmp tmp2 :recurse)
     (letfn [(walk-rel [dir] (let [xform (comp (drop 1) (map #(.relativize dir %)))]
                               (into #{} xform (file/walk dir))))]
       ;; how to test the ordering?

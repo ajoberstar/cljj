@@ -100,13 +100,19 @@
   ([path max-depth] (Files/walk (as-path path) max-depth (into-array FileVisitOption []))))
 
 (defn make-dir
-  "Creates an empty directory at the path. Optionally can specify to create parent directories, as well."
-  ([path] (make-dir path false))
-  ([path parents?]
-   (let [path (as-path path)]
-     (if parents?
-       (Files/createDirectories path (into-array FileAttribute []))
-       (Files/createDirectory path (into-array FileAttribute []))))))
+  "Creates an empty directory at the path. Parents must exist already."
+  [path]
+  (Files/createDirectory path (into-array FileAttribute [])))
+
+(defn make-dirs
+  "Creates an empty directory at the path, including any parent directories, if they don't already exist."
+  [path]
+  (Files/createDirectories (as-path path) (into-array FileAttribute [])))
+
+(defn make-parents
+  "Creates parent directories of the path, if they don't already exist."
+  [path]
+  (make-dirs (.getParent (as-path path))))
 
 (defn make-file
   "Creates an empty file at the path."
@@ -150,11 +156,11 @@
 
 (defn delete
   "Deletes a file or directory. Will not fail if the path does not exist. Can optionally
-  delete recursively."
+  delete recursively by passing :recurse."
   ([path] (delete path false))
   ([path recurse]
    (let [path (as-path path)]
-    (if (and recurse (dir? path))
+    (if (and (= :recurse recurse) (dir? path))
       (Files/walkFileTree path delete-visitor)
       (Files/deleteIfExists path)))))
 
@@ -164,10 +170,10 @@
   (Files/move (as-path path) (as-path target) (into-array CopyOption [])))
 
 (defn copy
-  "Copies a file or directory. Can optionally copy the directory recursively."
+  "Copies a file or directory. Can optionally copy the directory recursively by passing :recurse."
   ([from to] (copy from to false))
   ([from to recurse]
-   (if (and recurse (dir? from))
+   (if (and (= :recurse recurse) (dir? from))
     (with-open [stream (-> from walk)]
       (doseq [ffile (rest (stream/stream-seq stream))]
         (let [rpath (.relativize from ffile)
