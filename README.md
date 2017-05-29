@@ -23,7 +23,7 @@ ike.cljj is a Clojure library of wrappers around Java APIs.
 
 **NOTE:** ike.cljj depends on APIs added in Java 7 and/or 8.
 
-* [Release Notes](https://github.com/ajoberstar/semver-vcs/releases)
+* [Release Notes](https://github.com/ajoberstar/ike.cljj/releases)
 
 ### Reducing on a Stream
 
