@@ -99,7 +99,8 @@
   (let [tmp (file/temp-file "lines" ".txt")
         test-lines ["one" "two" "three"]]
     (file/write-lines tmp test-lines)
-    (is (= test-lines (into [] (file/read-lines tmp))))))
+    (is (= test-lines (into [] (file/read-lines tmp))))
+    (is (= test-lines (file/read-all-lines tmp)))))
 
 (deftest write-read-bytes-round-trip
   (let [tmp (file/temp-file "bytes" ".txt")
@@ -112,6 +113,21 @@
         test-str "onetwothree"]
     (file/write-str tmp test-str)
     (is (= test-str (file/read-str tmp)))))
+
+(deftest write-append
+  (let [tmp (file/temp-file "append" ".txt")
+        lines1 ["one"]
+        lines2 ["two"]]
+    (file/write-lines tmp lines1)
+    (file/write-lines tmp lines2 :append true)
+    (is (= ["one" "two"] (file/read-all-lines tmp)))))
+
+(deftest write-encoding
+  (let [tmp (file/temp-file "str" ".txt")
+        test-str "onetwothree"]
+    (file/write-str tmp test-str :encoding "UTF-16")
+    (is (not (= test-str (file/read-str tmp))))
+    (is (= test-str (file/read-str tmp :encoding "UTF-16")))))
 
 (deftest list-test
   (let [tmp (file/temp-dir "list")
@@ -153,7 +169,7 @@
         d1d4 (file/make-dir (.resolve tmp "1/4"))
         d1d5 (file/make-dir (.resolve tmp "1/5"))
         d1d4f6 (file/make-file (.resolve tmp "1/4/6"))]
-    (file/delete tmp :recurse)
+    (file/delete tmp :recurse true)
     (is (not (file/exists? tmp)))))
 
 (deftest copy-recursive-test
@@ -166,7 +182,7 @@
         d1d4f6 (file/make-file (.resolve tmp "1/4/6"))
         tmp2 (file/temp-dir "copy2")]
     (is (not= (into #{} (file/walk tmp)) (into #{} (file/walk tmp2))))
-    (file/copy tmp tmp2 :recurse)
+    (file/copy tmp tmp2 :recurse true)
     (letfn [(walk-rel [dir] (let [xform (comp (drop 1) (map #(.relativize dir %)))]
                               (into #{} xform (file/walk dir))))]
       ;; how to test the ordering?

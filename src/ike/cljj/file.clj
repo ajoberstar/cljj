@@ -11,6 +11,16 @@
            (java.io File)
            (java.net URI)))
 
+(defn ^:private open-opts [opts]
+  (if (:append opts)
+    (into-array OpenOption [StandardOpenOption/CREATE StandardOpenOption/WRITE StandardOpenOption/APPEND])
+    (into-array OpenOption [])))
+
+(defn ^:private encoding [opts]
+  (if-let [encoding (:encoding opts)]
+    (Charset/forName encoding)
+    (StandardCharsets/UTF_8)))
+
 ;; Support more interop with native Clojure IO functions
 
 (extend-protocol io/Coercions
@@ -20,18 +30,14 @@
 
 (extend-protocol io/IOFactory
   Path
-  (make-reader [x {:keys [encoding]}]
-    (let [charset (if encoding (Charset/forName encoding) (StandardCharsets/UTF_8))]
-      (Files/newBufferedReader x charset)))
-  (make-writer [x  {:keys [append encoding]}]
-    (let [opts (if append [StandardOpenOption/CREATE StandardOpenOption/WRITE StandardOpenOption/APPEND] [])
-          charset (if encoding (Charset/forName encoding) (StandardCharsets/UTF_8))]
-      (Files/newBufferedWriter x charset (into-array OpenOption opts))))
-  (make-input-stream [x  _]
-    (Files/newInputStream x (into-array OpenOption [])))
-  (make-output-stream [x  {:keys [append]}]
-    (let [opts (if append [StandardOpenOption/CREATE StandardOpenOption/WRITE StandardOpenOption/APPEND] [])]
-      (Files/newOutputStream x (into-array OpenOption opts)))))
+  (make-reader [x opts]
+    (Files/newBufferedReader x (encoding opts)))
+  (make-writer [x  opts]
+    (Files/newBufferedWriter x (encoding opts) (open-opts opts)))
+  (make-input-stream [x  opts]
+    (Files/newInputStream x (open-opts opts)))
+  (make-output-stream [x  opts]
+    (Files/newOutputStream x (open-opts opts))))
 
 ;; Support for java.nio.file
 
@@ -155,14 +161,13 @@
       FileVisitResult/CONTINUE)))
 
 (defn delete
-  "Deletes a file or directory. Will not fail if the path does not exist. Can optionally
-  delete recursively by passing :recurse."
-  ([path] (delete path false))
-  ([path recurse]
-   (let [path (as-path path)]
-    (if (and (= :recurse recurse) (dir? path))
+  "Deletes a file or directory. Will not fail if the path does not exist. Options include:
+     :recurse  true to copy all files underneath the directory (default false)"
+  [path & {:as opts}]
+  (let [path (as-path path)]
+    (if (and (:recurse opts) (dir? path))
       (Files/walkFileTree path delete-visitor)
-      (Files/deleteIfExists path)))))
+      (Files/deleteIfExists path))))
 
 (defn move
   "Moves the file or directory from 'path' to 'target'."
@@ -170,16 +175,16 @@
   (Files/move (as-path path) (as-path target) (into-array CopyOption [])))
 
 (defn copy
-  "Copies a file or directory. Can optionally copy the directory recursively by passing :recurse."
-  ([from to] (copy from to false))
-  ([from to recurse]
-   (if (and (= :recurse recurse) (dir? from))
+  "Copies a file or directory. Options include:
+    :recurse  true to copy all files underneath the directory (default false)"
+  [from to & {:as opts}]
+  (if (and (:recurse opts) (dir? from))
     (with-open [stream (-> from walk)]
       (doseq [ffile (rest (stream/stream-seq stream))]
         (let [rpath (.relativize from ffile)
               tfile (.resolve to rpath)]
           (copy ffile tfile))))
-    (Files/copy (as-path from) (as-path to) (into-array CopyOption [])))))
+    (Files/copy (as-path from) (as-path to) (into-array CopyOption []))))
 
 (defn read-bytes
   "Reads all bytes from a file and returns the byte[]."
@@ -187,26 +192,39 @@
   (Files/readAllBytes (as-path path)))
 
 (defn read-lines
-  "Reads all lines from a file and returns them in a Stream."
-  [path]
-  (Files/lines (as-path path) (StandardCharsets/UTF_8)))
+  "Reads lines from a file and returns them in a Stream. Options include:
+    :encoding  string name of charset (as supported by Charset/forName) (default \"UTF-8\")"
+  [path & {:as opts}]
+  (Files/lines (as-path path) (encoding opts)))
+
+(defn read-all-lines
+  "Reads all lines from a file and returns them as a List. Options include:
+    :encoding  string name of charset (as supported by Charset/forName) (default \"UTF-8\")"
+  [path & {:as opts}]
+  (Files/readAllLines (as-path path) (encoding opts)))
 
 (defn read-str
-  "Reads all bytes from a file and returns as a String (using UTF-8)."
-  [path]
-  (-> path read-bytes (String. (StandardCharsets/UTF_8))))
+  "Reads all bytes from a file and returns as a String. Options include:
+    :encoding  string name of charset (as supported by Charset/forName) (default \"UTF-8\")"
+  [path & {:as opts}]
+  (-> path as-path Files/readAllBytes (String. (encoding opts))))
 
 (defn write-bytes
-  "Writes all bytes to a file (truncating any existing content)."
-  [path bytes]
-  (Files/write (as-path path) bytes (into-array OpenOption [])))
+  "Writes all bytes to a file (truncating any existing content). Options include:
+    :append  true to open file in append mode (default false, i.e. truncate)"
+  [path bytes & {:as opts}]
+  (Files/write (as-path path) bytes (open-opts opts)))
 
 (defn write-lines
-  "Writes all lines to a file (truncating any existing content)."
-  [path lines]
-  (Files/write (as-path path) lines (StandardCharsets/UTF_8) (into-array OpenOption [])))
+  "Writes all lines to a file. Options include:
+    :append    true to open file in append mode (default false, i.e. truncate)
+    :encoding  string name of charset (as supported by Charset/forName) (default \"UTF-8\")"
+  [path lines & {:as opts}]
+  (Files/write (as-path path) lines (encoding opts) (open-opts opts)))
 
 (defn write-str
-  "Writes a String's bytes (as UTF-8) to to a file."
-  [path content]
-  (write-bytes path (.getBytes content (StandardCharsets/UTF_8))))
+  "Writes a String's bytes (as UTF-8) to to a file. Options include:
+    :append    true to open file in append mode (default false, i.e. truncate)
+    :encoding  string name of charset (as supported by Charset/forName) (default \"UTF-8\")"
+  [path content & {:as opts}]
+  (Files/write (as-path path) (.getBytes content (encoding opts)) (open-opts opts)))
