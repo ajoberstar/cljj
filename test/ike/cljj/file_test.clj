@@ -1,10 +1,21 @@
 (ns ike.cljj.file-test
   (:refer-clojure :exclude [list])
   (:require [clojure.test :refer :all]
-            [ike.cljj.file :as file])
+            [ike.cljj.file :as file]
+            [clojure.java.io :as io])
   (:import (java.nio.file Path Paths)
            (java.io File)
            (java.net URI)))
+
+;; test clojure interop
+
+(deftest spit-slurp-rount-trip
+  (let [tmp (file/temp-file "spit-slurp" ".txt")
+        text "onetwothree"]
+    (spit tmp text)
+    (is (= text (slurp tmp)))))
+
+;; test ike.cljj.file API
 
 (deftest as-path-accepts-nil
   (is (= nil (file/as-path nil))))

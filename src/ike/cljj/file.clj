@@ -3,12 +3,37 @@
   use the Pathish protocol to turn their arguments into Paths."
   (:refer-clojure :exclude [list])
   (:require [ike.cljj.stream :as stream]
-            [ike.cljj.function :refer [defsam]])
-  (:import (java.nio.file Path Paths Files CopyOption LinkOption OpenOption FileVisitOption SimpleFileVisitor FileVisitResult)
+            [ike.cljj.function :refer [defsam]]
+            [clojure.java.io :as io])
+  (:import (java.nio.file Path Paths Files CopyOption LinkOption OpenOption StandardOpenOption FileVisitOption SimpleFileVisitor FileVisitResult)
            (java.nio.file.attribute FileAttribute)
-           (java.nio.charset StandardCharsets)
+           (java.nio.charset Charset StandardCharsets)
            (java.io File)
            (java.net URI)))
+
+;; Support more interop with native Clojure IO functions
+
+(extend-protocol io/Coercions
+  Path
+  (as-file [path] (.toFile path))
+  (as-url [path] (.toURL (.toFile path))))
+
+(extend-protocol io/IOFactory
+  Path
+  (make-reader [x {:keys [encoding]}]
+    (let [charset (if encoding (Charset/forName encoding) (StandardCharsets/UTF_8))]
+      (Files/newBufferedReader x charset)))
+  (make-writer [x  {:keys [append encoding]}]
+    (let [opts (if append [StandardOpenOption/CREATE StandardOpenOption/WRITE StandardOpenOption/APPEND] [])
+          charset (if encoding (Charset/forName encoding) (StandardCharsets/UTF_8))]
+      (Files/newBufferedWriter x charset (into-array OpenOption opts))))
+  (make-input-stream [x  _]
+    (Files/newInputStream x (into-array OpenOption [])))
+  (make-output-stream [x  {:keys [append]}]
+    (let [opts (if append [StandardOpenOption/CREATE StandardOpenOption/WRITE StandardOpenOption/APPEND] [])]
+      (Files/newOutputStream x (into-array OpenOption opts)))))
+
+;; Support for java.nio.file
 
 (defprotocol Pathish
   "Implement this protocl if your type can be converted to a
