@@ -4,7 +4,8 @@
   (:refer-clojure :exclude [list])
   (:require [ike.cljj.stream :as stream]
             [ike.cljj.function :refer [defsam]]
-            [clojure.java.io :as io])
+            [clojure.java.io :as io]
+            [clojure.string :as str])
   (:import (java.nio.file Path Paths Files CopyOption LinkOption OpenOption StandardOpenOption FileVisitOption SimpleFileVisitor FileVisitResult)
            (java.nio.file.attribute FileAttribute)
            (java.nio.charset Charset StandardCharsets)
@@ -63,6 +64,14 @@
   [x & more]
   (let [more-array (into-array String more)]
     (Paths/get x more-array)))
+
+(defn extension
+  "Gets the extension of the path, if any. Nil returned if there is no extension."
+  [path]
+  (let [name (-> path .getFileName str)
+        begin (str/last-index-of name ".")]
+    (when (and begin (< 0 begin) (< begin (dec (count name))))
+      (subs name (inc begin)))))
 
 (defn exists?
   "Tests whether the path exists."

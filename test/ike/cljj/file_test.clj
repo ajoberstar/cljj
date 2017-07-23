@@ -38,6 +38,12 @@
 (deftest path-accepts-multiple-args
   (is (instance? Path (file/path "/etc" "fstab"))))
 
+(deftest extension-test
+  (is (= "flac" (file/extension (file/path "/home" "person" "music.flac"))))
+  (is (= "conf" (file/extension (file/path ".music.conf"))))
+  (is (nil? (file/extension (file/path "/etc" "temp."))))
+  (is (nil? (file/extension (file/path "/var" "log" "app" "things")))))
+
 (deftest make-dir-test
   (let [path (.resolve (file/temp-dir "make-dir") "the-dir")]
     (is (not (file/exists? path)))

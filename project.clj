@@ -1,4 +1,4 @@
-(defproject org.ajoberstar/ike.cljj "0.3.0"
+(defproject org.ajoberstar/ike.cljj "0.4.0"
   :description "Clojure to Java interop APIs"
   :url "https://github.com/ajoberstar/ike.cljj"
   :license {:name "Eclipse Public License"
