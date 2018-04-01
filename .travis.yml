@@ -1,5 +1,0 @@
-language: java
-install: ""
-script: lein test
-jdk:
-    - oraclejdk8

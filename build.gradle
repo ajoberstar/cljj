@@ -1,0 +1,48 @@
+plugins {
+  id 'gradle-clojure.clojure' version '0.3.1'
+  id 'maven-publish'
+  id 'org.ajoberstar.grgit' version '2.1.1'
+  id 'org.ajoberstar.reckon' version '0.4.0'
+}
+
+group = 'org.ajoberstar'
+
+reckon {
+  normal = scopeFromProp()
+  preRelease = snapshotFromProp()
+}
+
+repositories {
+  jcenter()
+  maven {
+    name = 'Clojars'
+    url = 'https://repo.clojars.org/'
+  }
+}
+
+dependencies {
+  compile 'org.clojure:clojure:1.9.0'
+  compile 'org.clojure:tools.macro:0.1.2'
+
+  testCompile 'junit:junit:4.12'
+
+  devCompile 'org.clojure:tools.namespace:0.3.0-alpha4'
+}
+
+publishing {
+  repositories {
+    maven {
+      name = 'Clojars'
+      url = 'https://repo.clojars.org/'
+      credentials {
+        username = System.env['CLOJARS_USER']
+        password = System.env['CLOJARS_PASSWORD']
+      }
+    }
+  }
+  publications {
+    main(MavenPublication) {
+      from components.java
+    }
+  }
+}

@@ -1,6 +1,6 @@
 # ike.cljj
 
-[![Travis](https://img.shields.io/travis/ajoberstar/ike.cljj.svg?style=flat-square)](https://travis-ci.org/ajoberstar/ike.cljj)
+[![CircleCI](https://circleci.com/gh/ajoberstar/ike.cljj.svg?style=svg)](https://circleci.com/gh/ajoberstar/ike.cljj)
 [![GitHub license](https://img.shields.io/github/license/ajoberstar/ike.cljj.svg?style=flat-square)](https://github.com/ajoberstar/ike.cljj/blob/master/LICENSE)
 [![Clojars](https://img.shields.io/clojars/v/org.ajoberstar/ike.cljj.svg?style=flat-square)](http://clojars.org/org.ajoberstar/ike.cljj)
 
