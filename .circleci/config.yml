@@ -1,0 +1,74 @@
+defaults: &defaults
+  steps:
+    - checkout
+    - restore_cache:
+        keys:
+          - v1-gradle-{{ checksum "build.gradle" }}
+          - v1-gradle-
+    - run:
+        name: Compile and test
+        command: ./gradlew clean check
+    - store_test_results:
+        path: build/test-results
+        when: always
+    - save_cache:
+        paths:
+          - ~/.gradle
+        key: v1-gradle-{{ checksum "build.gradle" }}
+branches-and-tags: &branches-and-tags
+  filters:
+    tags:
+      only: /^\d+\.\d+\.\d(?:-.+)?$/
+tags-only: &tags-only
+  filters:
+    branches:
+      ignore: /.*/
+    tags:
+      only: /^\d+\.\d+\.\d(?:-.+)?$/
+
+version: 2
+jobs:
+  commit-java-lts:
+    <<: *defaults
+    docker:
+      - image: circleci/openjdk:8-jdk
+  commit-java-9:
+    <<: *defaults
+    docker:
+      - image: circleci/openjdk:9-jdk
+  commit-java-10:
+    <<: *defaults
+    docker:
+      - image: circleci/openjdk:10-jdk
+  publish:
+    docker:
+      - image: circleci/openjdk:8-jdk
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-gradle-{{ checksum "build.gradle" }}
+      - run:
+          name: Publish Artifacts
+          command: ./gradlew publish
+workflows:
+  version: 2
+  main:
+    jobs:
+      - commit-java-lts:
+          <<: *branches-and-tags
+      - commit-java-9:
+          <<: *branches-and-tags
+          requires:
+            - commit-java-lts
+      - commit-java-10:
+          <<: *branches-and-tags
+          requires:
+            - commit-java-lts
+      - publish:
+          <<: *tags-only
+          requires:
+            - commit-java-lts
+            - commit-java-9
+            - commit-java-10
+          context: ajoberstar

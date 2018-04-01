@@ -1,9 +1,0 @@
-language: java
-install: ""
-script: ./gradlew clean check
-jdk:
-    - oraclejdk8
-cache:
-  directories:
-    - $HOME/.gradle/caches
-    - $HOME/.gradle/wrapper
