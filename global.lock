@@ -1,0 +1,196 @@
+{
+    "compile": {
+        "org.clojure:clojure": {
+            "locked": "1.9.0",
+            "requested": "1.9.0"
+        },
+        "org.clojure:tools.macro": {
+            "locked": "0.1.2",
+            "requested": "0.1.2"
+        }
+    },
+    "compileClasspath": {
+        "org.clojure:clojure": {
+            "locked": "1.9.0",
+            "requested": "1.9.0"
+        },
+        "org.clojure:tools.macro": {
+            "locked": "0.1.2",
+            "requested": "0.1.2"
+        }
+    },
+    "default": {
+        "org.clojure:clojure": {
+            "locked": "1.9.0",
+            "requested": "1.9.0"
+        },
+        "org.clojure:tools.macro": {
+            "locked": "0.1.2",
+            "requested": "0.1.2"
+        }
+    },
+    "devCompile": {
+        "junit:junit": {
+            "locked": "4.12",
+            "requested": "4.12"
+        },
+        "org.clojure:clojure": {
+            "locked": "1.9.0",
+            "requested": "1.9.0"
+        },
+        "org.clojure:tools.macro": {
+            "locked": "0.1.2",
+            "requested": "0.1.2"
+        },
+        "org.clojure:tools.namespace": {
+            "locked": "0.3.0-alpha4",
+            "requested": "0.3.0-alpha4"
+        },
+        "proto-repl:proto-repl": {
+            "locked": "0.2.1",
+            "requested": "latest.release"
+        }
+    },
+    "devCompileClasspath": {
+        "junit:junit": {
+            "locked": "4.12",
+            "requested": "4.12"
+        },
+        "org.clojure:clojure": {
+            "locked": "1.9.0",
+            "requested": "1.9.0"
+        },
+        "org.clojure:tools.macro": {
+            "locked": "0.1.2",
+            "requested": "0.1.2"
+        },
+        "org.clojure:tools.namespace": {
+            "locked": "0.3.0-alpha4",
+            "requested": "0.3.0-alpha4"
+        },
+        "proto-repl:proto-repl": {
+            "locked": "0.2.1",
+            "requested": "latest.release"
+        }
+    },
+    "devRuntime": {
+        "junit:junit": {
+            "locked": "4.12",
+            "requested": "4.12"
+        },
+        "org.clojure:clojure": {
+            "locked": "1.9.0",
+            "requested": "1.9.0"
+        },
+        "org.clojure:tools.macro": {
+            "locked": "0.1.2",
+            "requested": "0.1.2"
+        },
+        "org.clojure:tools.namespace": {
+            "locked": "0.3.0-alpha4",
+            "requested": "0.3.0-alpha4"
+        },
+        "proto-repl:proto-repl": {
+            "locked": "0.2.1",
+            "requested": "latest.release"
+        }
+    },
+    "devRuntimeClasspath": {
+        "junit:junit": {
+            "locked": "4.12",
+            "requested": "4.12"
+        },
+        "org.clojure:clojure": {
+            "locked": "1.9.0",
+            "requested": "1.9.0"
+        },
+        "org.clojure:tools.macro": {
+            "locked": "0.1.2",
+            "requested": "0.1.2"
+        },
+        "org.clojure:tools.namespace": {
+            "locked": "0.3.0-alpha4",
+            "requested": "0.3.0-alpha4"
+        },
+        "proto-repl:proto-repl": {
+            "locked": "0.2.1",
+            "requested": "latest.release"
+        }
+    },
+    "runtime": {
+        "org.clojure:clojure": {
+            "locked": "1.9.0",
+            "requested": "1.9.0"
+        },
+        "org.clojure:tools.macro": {
+            "locked": "0.1.2",
+            "requested": "0.1.2"
+        }
+    },
+    "runtimeClasspath": {
+        "org.clojure:clojure": {
+            "locked": "1.9.0",
+            "requested": "1.9.0"
+        },
+        "org.clojure:tools.macro": {
+            "locked": "0.1.2",
+            "requested": "0.1.2"
+        }
+    },
+    "testCompile": {
+        "junit:junit": {
+            "locked": "4.12",
+            "requested": "4.12"
+        },
+        "org.clojure:clojure": {
+            "locked": "1.9.0",
+            "requested": "1.9.0"
+        },
+        "org.clojure:tools.macro": {
+            "locked": "0.1.2",
+            "requested": "0.1.2"
+        }
+    },
+    "testCompileClasspath": {
+        "junit:junit": {
+            "locked": "4.12",
+            "requested": "4.12"
+        },
+        "org.clojure:clojure": {
+            "locked": "1.9.0",
+            "requested": "1.9.0"
+        },
+        "org.clojure:tools.macro": {
+            "locked": "0.1.2",
+            "requested": "0.1.2"
+        }
+    },
+    "testRuntime": {
+        "junit:junit": {
+            "locked": "4.12",
+            "requested": "4.12"
+        },
+        "org.clojure:clojure": {
+            "locked": "1.9.0",
+            "requested": "1.9.0"
+        },
+        "org.clojure:tools.macro": {
+            "locked": "0.1.2",
+            "requested": "0.1.2"
+        }
+    },
+    "testRuntimeClasspath": {
+        "junit:junit": {
+            "locked": "4.12",
+            "requested": "4.12"
+        },
+        "org.clojure:clojure": {
+            "locked": "1.9.0",
+            "requested": "1.9.0"
+        },
+        "org.clojure:tools.macro": {
+            "locked": "0.1.2",
+            "requested": "0.1.2"
+        }
+    }
+}

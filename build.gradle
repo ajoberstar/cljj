@@ -1,8 +1,8 @@
 plugins {
+  id 'org.ajoberstar.defaults' version '0.10.0'
   id 'gradle-clojure.clojure' version '0.3.1'
-  id 'maven-publish'
-  id 'org.ajoberstar.grgit' version '2.1.1'
-  id 'org.ajoberstar.reckon' version '0.4.0'
+  // TODO remove when Gradle dependency locking is available
+  id 'nebula.dependency-lock' version '5.0.4'
 }
 
 group = 'org.ajoberstar'
@@ -38,11 +38,6 @@ publishing {
         username = System.env['CLOJARS_USER']
         password = System.env['CLOJARS_PASSWORD']
       }
-    }
-  }
-  publications {
-    main(MavenPublication) {
-      from components.java
     }
   }
 }
