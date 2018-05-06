@@ -10,14 +10,18 @@
            (java.nio.file.attribute FileAttribute)
            (java.nio.charset Charset StandardCharsets)
            (java.io File)
-           (java.net URI)))
+           (java.net URI)
+           (java.util.stream Stream)))
 
-(defn ^:private open-opts [opts]
+(defn ^:private ^"[Ljava.nio.file.OpenOption;" open-opts [opts]
   (if (:append opts)
     (into-array OpenOption [StandardOpenOption/CREATE StandardOpenOption/WRITE StandardOpenOption/APPEND])
     (into-array OpenOption [])))
 
-(defn ^:private encoding [opts]
+(defn ^:private ^"[Ljava.nio.file.CopyOption;" copy-opts [opts]
+  (into-array CopyOption []))
+
+(defn ^:private ^Charset encoding [opts]
   (if-let [encoding (:encoding opts)]
     (Charset/forName encoding)
     (StandardCharsets/UTF_8)))
@@ -45,7 +49,7 @@
 (defprotocol Pathish
   "Implement this protocl if your type can be converted to a
   java.nio.file.Path object."
-  (as-path [x]))
+  (^Path as-path [x]))
 
 (extend-protocol Pathish
   nil
@@ -59,16 +63,16 @@
   URI
   (as-path [x] (Paths/get x)))
 
-(defn path
+(defn ^Path path
   "Creates a Path using the segments provided."
   [x & more]
   (let [more-array (into-array String more)]
     (Paths/get x more-array)))
 
-(defn extension
+(defn ^String extension
   "Gets the extension of the path, if any. Nil returned if there is no extension."
   [path]
-  (let [name (-> path .getFileName str)
+  (let [name (-> path as-path .getFileName str)
         begin (str/last-index-of name ".")]
     (when (and begin (< 0 begin) (< begin (dec (count name))))
       (subs name (inc begin)))))
@@ -103,7 +107,7 @@
   [path]
   (Files/size (as-path path)))
 
-(defn list
+(defn ^Stream list
   "Lists the immediate children of a directory. Be sure to use this in a with-open
   or use reduce/transducers to close the stream.
 
@@ -116,7 +120,7 @@
   [path]
   (Files/list (as-path path)))
 
-(defn walk
+(defn ^Stream walk
   "Walks the file tree (depth-first) below a directory, returning a Stream. The first element
   will always be the given path. Be sure to use this in a with-open
   or use reduce/transducers to close the stream.
@@ -196,20 +200,20 @@
 
 (defn move
   "Moves the file or directory from 'path' to 'target'."
-  [path target]
-  (Files/move (as-path path) (as-path target) (into-array CopyOption [])))
+  [path target & {:as opts}]
+  (Files/move (as-path path) (as-path target) (copy-opts opts)))
 
 (defn copy
   "Copies a file or directory. Options include:
     :recurse  true to copy all files underneath the directory (default false)"
   [from to & {:as opts}]
   (if (and (:recurse opts) (dir? from))
-    (with-open [stream (-> from walk)]
+    (with-open [stream (-> from as-path walk)]
       (doseq [ffile (rest (stream/stream-seq stream))]
-        (let [rpath (.relativize from ffile)
-              tfile (.resolve to rpath)]
+        (let [rpath (.relativize (as-path from) ffile)
+              tfile (.resolve (as-path to) rpath)]
           (copy ffile tfile))))
-    (Files/copy (as-path from) (as-path to) (into-array CopyOption []))))
+    (Files/copy (as-path from) (as-path to) (copy-opts opts))))
 
 (defn read-bytes
   "Reads all bytes from a file and returns the byte[]."
@@ -247,7 +251,7 @@
 (defn write-bytes
   "Writes all bytes to a file (truncating any existing content). Options include:
     :append  true to open file in append mode (default false, i.e. truncate)"
-  [path bytes & {:as opts}]
+  [path ^bytes bytes & {:as opts}]
   (Files/write (as-path path) bytes (open-opts opts)))
 
 (defn write-lines
@@ -261,5 +265,5 @@
   "Writes a String's bytes (as UTF-8) to to a file. Options include:
     :append    true to open file in append mode (default false, i.e. truncate)
     :encoding  string name of charset (as supported by Charset/forName) (default \"UTF-8\")"
-  [path content & {:as opts}]
+  [path ^String content & {:as opts}]
   (Files/write (as-path path) (.getBytes content (encoding opts)) (open-opts opts)))

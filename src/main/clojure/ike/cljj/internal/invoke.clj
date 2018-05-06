@@ -2,7 +2,8 @@
   "Wrapper API for the java.lang.invoke API. Primarily this was limited
   to the methods functions needed to support ike.cljj.function."
   (:import (java.lang.invoke MethodType MethodHandles MethodHandleProxies MethodHandles$Lookup MethodHandle)
-           (java.util List)))
+           (java.util List)
+           (clojure.lang RT)))
 
 (defn ^Class array-class
   "Gets the array class for the given class."
@@ -28,7 +29,7 @@
   [^MethodType handle]
   (.wrap handle))
 
-(def ^MethodHandles$Lookup lookup (MethodHandles/publicLookup))
+(def ^MethodHandles$Lookup lookup (.in (MethodHandles/publicLookup) RT))
 
 (defn ^MethodHandle static-handle
   "Looks up a static method handle.

@@ -51,6 +51,8 @@ The `ike.cljj.function` namespace includes three main helpers for this:
 * `sam` - creating an anonymous SAM impl, as it were a Clojure function
 * `defsam` - defining a named SAM impl, as if it were a Clojure function
 
+**WARNING:** You may need type hints to avoid `IllegalAccessError` in Java 9+.
+
 ```clojure
 (defsam my-sam
   java.util.function.Predicate
