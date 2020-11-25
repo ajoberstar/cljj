@@ -1,7 +1,7 @@
 # ike.cljj
 
 [![Clojars](https://img.shields.io/clojars/v/org.ajoberstar/ike.cljj.svg?style=flat-square)](http://clojars.org/org.ajoberstar/ike.cljj)
-![](https://github.com/ajoberstar/ike.cljj/workflows/.github/workflows/build.yaml/badge.svg)
+![Build](https://github.com/ajoberstar/ike.cljj/workflows/Build/badge.svg)
 
 ## Why do you care?
 
