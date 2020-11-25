@@ -7,3 +7,6 @@
 /.project
 /.settings/
 /bin/
+
+# Intellij
+/.idea/

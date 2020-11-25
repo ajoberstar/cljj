@@ -1,6 +1,10 @@
 plugins {
-  id 'org.ajoberstar.defaults' version '0.14.2'
-  id 'gradle-clojure.clojure' version '0.5.0-alpha.1'
+  id 'dev.clojurephant.clojure'
+  id 'java-library'
+  id 'maven-publish'
+
+  id 'org.ajoberstar.grgit'
+  id 'org.ajoberstar.reckon'
 }
 
 group = 'org.ajoberstar'
@@ -11,7 +15,7 @@ reckon {
 }
 
 repositories {
-  jcenter()
+  mavenCentral()
   maven {
     name = 'Clojars'
     url = 'https://repo.clojars.org/'
@@ -19,12 +23,12 @@ repositories {
 }
 
 dependencies {
-  compile 'org.clojure:clojure:1.9.0'
-  compile 'org.clojure:tools.macro:0.1.2'
+  implementation 'org.clojure:clojure:1.10.1'
+  implementation 'org.clojure:tools.macro:0.1.5'
 
-  testCompile 'junit:junit:4.12'
+  testImplementation 'junit:junit:4.13.1'
 
-  devCompile 'org.clojure:tools.namespace:0.3.0-alpha4'
+  devImplementation 'org.clojure:tools.namespace:1.0.0'
 }
 
 publishing {
