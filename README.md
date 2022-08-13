@@ -1,7 +1,8 @@
 # cljj
 
 [![Clojars](https://img.shields.io/clojars/v/org.ajoberstar/cljj.svg?style=flat-square)](http://clojars.org/org.ajoberstar/cljj)
-![Build](https://github.com/ajoberstar/cljj/workflows/Build/badge.svg)
+[![cljdoc badge](https://cljdoc.org/badge/org.ajoberstar/cljj)](https://cljdoc.org/d/org.ajoberstar/cljj)
+![CI](https://github.com/ajoberstar/cljj/workflows/CI/badge.svg)
 
 **DISCLAIMER:** Prior to 0.5.0, this library was `org.ajoberstar/ike.cljj` with namespaces under `ike.cljj.*`. It is now `org.ajoberstar/cljj` with namespaces under `org.ajoberstar.cljj`.
 
