@@ -1,9 +1,9 @@
-(ns ike.cljj.file
+(ns org.ajoberstar.cljj.file
   "A straightforward wrapper of common java.nio.file.* functionality. All functions
   use the Pathish protocol to turn their arguments into Paths."
   (:refer-clojure :exclude [list])
-  (:require [ike.cljj.stream :as stream]
-            [ike.cljj.function :refer [defsam]]
+  (:require [org.ajoberstar.cljj.stream :as stream]
+            [org.ajoberstar.cljj.function :refer [defsam]]
             [clojure.java.io :as io]
             [clojure.string :as str])
   (:import (java.nio.file Path Paths Files CopyOption LinkOption OpenOption StandardOpenOption FileVisitOption SimpleFileVisitor FileVisitResult)

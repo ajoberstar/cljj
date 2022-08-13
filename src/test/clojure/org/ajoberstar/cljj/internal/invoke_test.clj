@@ -1,6 +1,6 @@
-(ns ike.cljj.internal.invoke-test
+(ns org.ajoberstar.cljj.internal.invoke-test
   (:require [clojure.test :refer :all]
-            [ike.cljj.internal.invoke :refer :all]))
+            [org.ajoberstar.cljj.internal.invoke :refer :all]))
 
 (deftest static-twoarg-method
   (let [mtype (method-type String CharSequence Iterable)

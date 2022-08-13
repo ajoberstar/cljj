@@ -1,6 +1,6 @@
-(ns ike.cljj.function-test
+(ns org.ajoberstar.cljj.function-test
   (:require [clojure.test :refer :all]
-            [ike.cljj.function :refer :all])
+            [org.ajoberstar.cljj.function :refer :all])
   (:import (java.util.function Supplier Consumer Function BiFunction)))
 
 (deftest supplier
