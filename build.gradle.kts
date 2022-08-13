@@ -10,7 +10,7 @@ group = "org.ajoberstar"
 
 reckon {
   setDefaultInferredScope("patch")
-  snapshots()
+  stages("alpha", "beta", "rc", "final")
   setScopeCalc(calcScopeFromProp().or(calcScopeFromCommitMessages()))
   setStageCalc(calcStageFromProp())
 }
