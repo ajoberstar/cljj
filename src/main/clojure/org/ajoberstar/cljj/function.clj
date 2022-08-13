@@ -1,4 +1,4 @@
-(ns ike.cljj.function
+(ns org.ajoberstar.cljj.function
   "Support for using Clojure functions in Java APIs requiring
   a SAM (Single Abstrace Method) interface.
 
@@ -16,7 +16,7 @@
   has not been benchmarked, may or may not be. It is mainly
   intended to provide a more convenient interop with Java
   APIs that take SAM arguments."
-  (:require [ike.cljj.internal.invoke :as invoke]
+  (:require [org.ajoberstar.cljj.internal.invoke :as invoke]
             [clojure.tools.macro :as macro])
   (:import (clojure.lang RT ISeq IFn)))
 

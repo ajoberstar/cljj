@@ -1,6 +1,6 @@
-(ns ike.cljj.stream
+(ns org.ajoberstar.cljj.stream
   (:require [clojure.core.protocols :refer [CollReduce coll-reduce]]
-            [ike.cljj.function :refer [sam]])
+            [org.ajoberstar.cljj.function :refer [sam]])
   (:import (java.util.stream BaseStream Stream StreamSupport)
            (java.util.function BiFunction BinaryOperator)
            (java.util Spliterator)))

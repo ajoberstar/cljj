@@ -1,7 +1,7 @@
-(ns ike.cljj.stream-test
+(ns org.ajoberstar.cljj.stream-test
   (:require [clojure.test :refer :all]
-            [ike.cljj.stream :refer :all]
-            [ike.cljj.function :refer [sam*]])
+            [org.ajoberstar.cljj.stream :refer :all]
+            [org.ajoberstar.cljj.function :refer [sam*]])
   (:import [java.util ArrayList]
            [java.util.function Predicate UnaryOperator]))
 

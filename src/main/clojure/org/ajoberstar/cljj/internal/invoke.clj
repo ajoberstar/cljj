@@ -1,4 +1,4 @@
-(ns ike.cljj.internal.invoke
+(ns org.ajoberstar.cljj.internal.invoke
   "Wrapper API for the java.lang.invoke API. Primarily this was limited
   to the methods functions needed to support ike.cljj.function."
   (:import (java.lang.invoke MethodType MethodHandles MethodHandleProxies MethodHandles$Lookup MethodHandle)

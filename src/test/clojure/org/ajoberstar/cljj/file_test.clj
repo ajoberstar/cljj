@@ -1,7 +1,7 @@
-(ns ike.cljj.file-test
+(ns org.ajoberstar.cljj.file-test
   (:refer-clojure :exclude [list])
   (:require [clojure.test :refer :all]
-            [ike.cljj.file :as file]
+            [org.ajoberstar.cljj.file :as file]
             [clojure.java.io :as io])
   (:import (java.nio.file Path Paths)
            (java.io File)

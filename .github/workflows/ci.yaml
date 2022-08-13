@@ -1,7 +1,8 @@
-name: Release
+name: CI
 on:
   push:
-    tags: ["*"]
+    branches: [main]
+  pull_request:
 jobs:
   check:
     runs-on: ubuntu-latest
@@ -28,13 +29,10 @@ jobs:
         with:
           distribution: temurin
           java-version: 17
-
+      
       - name: Validate Gradle Wrapper
         uses: gradle/wrapper-validation-action@v1
       - name: Setup Gradle
-        uses: gradle/gradle-build-action@v2
-      - name: Gradle publish
-        run: ./gradlew publish
-        env:
-          CLOJARS_USER: ${{ secrets.CLOJARS_USER }}
-          CLOJARS_TOKEN: ${{ secrets.CLOJARS_TOKEN }}
+        uses: gradle/gradle-build-action@v1
+      - name: Gradle check
+        run: ./gradlew check
