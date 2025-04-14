@@ -2,22 +2,19 @@ plugins {
   id("dev.clojurephant.clojure")
   id("java-library")
   id("maven-publish")
-
-  id("org.ajoberstar.reckon")
 }
 
 group = "org.ajoberstar"
 
-reckon {
-  setDefaultInferredScope("patch")
-  stages("alpha", "beta", "rc", "final")
-  setScopeCalc(calcScopeFromProp().or(calcScopeFromCommitMessages()))
-  setStageCalc(calcStageFromProp())
-}
-
-java {
-  toolchain {
-    languageVersion.set(JavaLanguageVersion.of(8))
+// declare that this is a new version of the old ike.cljj coordinates
+val defaultCapability = mapOf("group" to project.group, "name" to project.name, "version" to project.version)
+val legacyCapability = mapOf("group" to "org.ajoberstar", "name" to "ike.cljj", "version" to project.version)
+configurations.configureEach {
+  if (isCanBeConsumed()) {
+    outgoing {
+      capability(defaultCapability)
+      capability(legacyCapability)
+    }
   }
 }
 
@@ -25,7 +22,7 @@ dependencies {
   api("org.clojure:clojure:1.10.1")
   api("org.clojure:tools.macro:0.1.5")
 
-  testRuntimeOnly("org.ajoberstar:jovial:0.3.0")
+  testRuntimeOnly("dev.clojurephant:jovial:0.4.2")
 }
 
 tasks.withType<Test>() {
@@ -52,7 +49,7 @@ publishing {
         usage("java-api") { fromResolutionOf("runtimeClasspath") }
         usage("java-runtime") { fromResolutionResult() }
       }
-      
+
       pom {
         name.set(project.name)
         description.set(project.description)
