@@ -1,5 +1,8 @@
 # cljj
 
+> [!IMPORTANT]
+> This plugin is now maintained on [SourceHut](https://sr.ht/~ajoberstar/cljj).
+
 [![Clojars](https://img.shields.io/clojars/v/org.ajoberstar/cljj.svg?style=flat-square)](http://clojars.org/org.ajoberstar/cljj)
 [![cljdoc badge](https://cljdoc.org/badge/org.ajoberstar/cljj)](https://cljdoc.org/d/org.ajoberstar/cljj)
 ![CI](https://github.com/ajoberstar/cljj/workflows/CI/badge.svg)
